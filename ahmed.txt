@@ -1,0 +1,462 @@
+#include<iostream>
+#include<ctime>
+#include<string>
+using namespace std;
+// t is the boutton you should press to do something else after you finish and n is the button  you sholud press when you search for book 
+
+// x is the number you should press to do what do you want
+
+struct Date
+{
+	int year;
+
+	int month;
+
+	int day;
+};
+struct Books_in_the_library
+{
+	string title;
+
+	int production_year;
+
+	int number_of_copies;
+
+	string category;
+
+	int edition;
+};
+struct User
+{
+	int id;
+
+	string name;
+
+	string email;
+
+	int password;
+
+	string type;
+
+	Date creation_date;
+
+	int telephone_number[2];
+};
+void create_account_for_user(User& user);
+
+void which_book_i_need(char n);
+
+void enter_the_books(Books_in_the_library books[]);
+
+void buy();
+
+void get_date(User user[]);
+
+Books_in_the_library books[2];
+
+User user[2];
+
+int main()
+{
+	string employees_username[4] = { "ahmed", "mohamed", "sameh", "mourad" };
+
+	int employee_password[4] = { 3635 , 2264 , 2265, 7564 };
+
+	string  borrow, enter_employee_username;
+
+	char t = 'y', n;
+
+	int x, i = 0, productionYear, the_copies_in_library, enter_employee_password;
+
+	bool check = false, buy_book = false, find_book = false;
+
+	cout << "enter the informations of books" << endl;
+
+	enter_the_books(books);
+
+			while (t == 'y' || t == 'Y')
+			{
+				i = 0;
+
+				cout << "enter your username and password" << endl;
+
+				cin >> enter_employee_username;
+
+				cin >> enter_employee_password;
+
+				while (i < 4)
+				{
+					if (employees_username[i] == enter_employee_username && employee_password[i] == enter_employee_password)
+					{
+						cout << "correct" << endl;
+
+						check = true;
+
+						break;
+					}
+
+					i++;
+				}
+				if (check == false)
+				{
+					cout << "enter again" << endl;
+
+					cout << "press y to return " << endl;
+
+					cin >> t;
+				}
+				else
+				{
+					check = false;
+
+					cout << "enter the data of the user" << endl;
+
+					for (int q = 0; q < 2; q++)
+					{
+						create_account_for_user(user[q]);
+
+						if (user[q].type == "staff")
+						{
+							cout << " press 1 if you want to borrow book " << endl;
+
+							cout << " press 2 if you want to buy a book for STAFF ONLY" << endl;
+
+							cout << "press 3 if you want repot about all information of users in the last 7 days " << endl;
+
+							cin >> x;
+
+							if (x == 1)
+							{
+
+								cout << "if you know the title of book which you need press k and write its name" << endl;
+
+								cout << "if you know the production year of the book which you need press z and write its production year" << endl;
+
+								cin >> n;
+
+								which_book_i_need(n);
+
+
+							}
+
+							if (x == 2)
+							{
+								buy();
+
+
+
+
+							}
+							if (x == 3)
+							{
+								get_date(user);
+
+
+							}
+						}
+						else 
+						{
+							cout << "press 1if you want to boorow book " << endl;
+
+							cout << "press 2 if you want repot about all information of users in the last 7 days " << endl;
+
+							cin >> x;
+
+							if (x == 1)
+							{
+
+								cout << "if you know the title of book which you need press k and write its name" << endl;
+
+								cout << "if you know the production year of the book which you need press z and write its production year" << endl;
+
+								cin >> n;
+
+								which_book_i_need(n);
+
+								break;
+
+							}
+
+							if (x == 2)
+							{
+								cout << "repoart book" << endl;
+
+								cout << "enter day and month and year" << endl;
+
+								get_date(user);
+
+
+
+							}
+						}
+					}
+					break;
+				}
+			}
+	return 0;
+}
+void buy()
+{
+
+	int the_copies_i_need, j;
+
+	string the_book_i_want;
+
+	bool find_book = false, buy_book = false;
+
+
+	cout << "enter the name of the book you want" << endl;
+
+	cin >> the_book_i_want;
+
+	cout << "enter how many copies you need" << endl;
+
+	cin >> the_copies_i_need;
+
+	for (j = 0; j < 2; j++)
+	{
+		if (books[j].title == the_book_i_want && books[j].number_of_copies > 0)
+		{
+			find_book = true;
+
+			if (the_copies_i_need <= books[j].number_of_copies)
+			{
+				buy_book = true;
+			}
+			books[j].number_of_copies -= the_copies_i_need;
+
+			cout << books[j].number_of_copies << endl;
+		}
+
+
+
+	}
+	if (find_book == true && buy_book == true) 
+	{
+		cout << "the book is valid" << endl;
+	}
+
+	else
+		cout << "the book is not valid" << endl;
+}
+
+
+void enter_the_books(Books_in_the_library books[])
+{
+
+	for (int s = 0; s < 2; s++)
+	{
+		cout << "enter book title without spaces" << endl;
+
+		cin >> books[s].title;
+
+		cout << "enter book production year" << endl;
+
+		cin >> books[s].production_year;
+
+		cout << "enter number of copies" << endl;
+
+		cin >> books[s].number_of_copies;
+
+		cout << "enter book category" << endl;
+
+		cin >> books[s].category;
+
+		cout << "enter book edition" << endl;
+
+		cin >> books[s].edition;
+	}
+
+
+}
+void which_book_i_need(char n)
+{
+	// n is the button you should press when  borrow a book 
+
+	bool find_book = false;
+
+	int productionYear;
+
+	string bookName;
+
+	if (n == 'k') 
+	{
+
+		cin >> bookName;
+
+		for (int s = 0; s < 2; s++) 
+		{
+			if (bookName == books[s].title && books[s].number_of_copies > 0)
+				find_book = true;
+
+		}
+	}
+	else if (n == 'z') 
+	{
+		cout << "enter production year" << endl;
+		cin >> productionYear;
+		for (int s = 0; s < 2; s++)
+		{
+			if (productionYear == books[s].production_year && books[s].number_of_copies > 0)
+				find_book = true;
+		}
+	}
+	if (find_book == true)
+		cout << "the book is valid" << endl;
+	else
+		cout << "the book is not valid" << endl;
+}
+
+
+
+
+void create_account_for_user(User& user)
+{
+	// t you should press e if you entered incorrect type  and n should press a if you entered more than 3 telephone numbers
+
+	bool endLoop = false;
+
+	int maximum_number_of_telephones;
+
+	char t = 'e', n = 'a';
+
+	while (t == 'e' || t == 'E')
+	{
+		for (int ii = 0; ii < 1; ii++) 
+		{
+			cout << "enter user name" << endl;
+
+			cin >> user.name;
+
+
+			cout << "enter email" << endl;
+
+			cin >> user.email;
+
+			cout << "enter password" << endl;
+
+			cin >> user.password;
+
+			cout << "enter user creation date" << endl;
+
+			cin >> user.creation_date.day >> user.creation_date.month >> user.creation_date.year;
+
+			cout << "enter user type (staff,guest,student)" << endl;
+
+			cin >> user.type;
+
+			if (user.type == "student" || user.type == "guest" || user.type == "staff")
+			{
+
+				while (n == 'a' || n == 'A') 
+				{
+
+					cout << "enter number of telephones numbers" << endl;
+
+					cin >> maximum_number_of_telephones;
+
+					if (maximum_number_of_telephones <= 3 && maximum_number_of_telephones > 0)
+					{
+						for (int r = 0; r < maximum_number_of_telephones; r++) 
+						{
+							cout << "enter mobile number" << endl;
+
+							cin >> user.telephone_number[r];
+						}
+
+
+						cout << "it is a successful process" << endl;
+
+						endLoop = true;
+
+						break;
+
+					}
+					else 
+					{
+
+						cout << "it is many telephones numbers" << endl;
+
+						cout << "press a to return " << endl;
+
+						cin >> n;
+					}
+
+				}
+			}
+
+			else 
+			{
+				cout << "enter a valid type" << endl;
+				cout << "press e to try again" << endl;
+				cin >> t;
+
+			}
+		}
+
+		if (endLoop == true)
+		{
+			break;
+
+		}
+
+	}
+}
+void get_date(User user[])
+{
+	int counter = 0;
+
+    time_t ONE_DAY = 24 * 60 * 60;
+
+	struct tm  tm;
+
+	struct tm  seven_days_ago;
+
+	time_t today_row_time;
+
+	time(&today_row_time);
+
+	time_t lastWeekRawTime = today_row_time - ONE_DAY * 7;
+
+	localtime_s(&tm, &today_row_time);
+
+	tm.tm_year += 1900;
+
+	tm.tm_mon += 1;
+
+
+	localtime_s(&seven_days_ago, &lastWeekRawTime);
+
+	seven_days_ago.tm_year += 1900;
+
+	seven_days_ago.tm_mon += 1;
+
+
+	bool userInLastWeek = false;
+
+	for (int i = 0; i < 1; i++)
+	{
+
+		if (user[i].creation_date.year <= tm.tm_year && user[i].creation_date.year >= seven_days_ago.tm_year) 
+		{
+			if (user[i].creation_date.month <= tm.tm_mon && user[i].creation_date.month >= seven_days_ago.tm_mon) 
+			{
+				if (user[i].creation_date.day <= tm.tm_mday && user[i].creation_date.day >= seven_days_ago.tm_mday) 
+				{
+					userInLastWeek = true;
+
+					cout << user[i].name << endl << user[i].email << endl;
+				}
+			}
+		}
+
+		if (userInLastWeek) 
+		{
+			counter++;
+		}
+	}
+	cout << "the number of users they entered the library in the last 7 days" << endl;
+
+	cout << counter << endl;
+
+}
